@@ -1,0 +1,27 @@
+{
+  "name": "re-express",
+  "version": "0.0.1",
+  "description": "Build restful api endpoints super fast",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "re-express",
+    "rest",
+    "http",
+    "web",
+    "restful"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RizwanAmjad/re-express.git"
+  },
+  "author": "Rizwan Amjad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "mongoose": "^6.5.3"
+  }
+}
