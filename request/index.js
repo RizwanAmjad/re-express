@@ -1,6 +1,18 @@
-const createPostRequest = function () {
-  return (req, res) => {
-    return res.send("POST");
+const validateJoi = require("../validation");
+
+const createPostRequest = function ({ mongooseSchema, joiSchema }) {
+  return async (req, res) => {
+    // validate the request body
+    const error = validateJoi(joiSchema, req.body);
+    if (error) return res.status(400).send(error);
+    // create the object in mongoose
+    const mongooseObject = new mongooseSchema(req.body);
+    try {
+      // save the category
+      return res.send(await mongooseObject.save());
+    } catch (error) {
+      return res.status(500).send({ error });
+    }
   };
 };
 

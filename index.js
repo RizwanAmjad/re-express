@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   createPostRequest,
   createGetRequest,
@@ -10,9 +11,16 @@ const methods = { POST: 0, GET: 1, PUT: 2, DELETE: 3 };
 
 const app = express();
 
-app.endpoint = function (name, method) {
+app.use(express.json());
+/**
+ *
+ * @param {String} name
+ * @param {number[]} method
+ * @param {Object} schema
+ */
+app.endpoint = function endpoint(name, method, schema) {
   if (method.includes(methods.POST)) {
-    app.post(`/${name}`, createPostRequest());
+    app.post(`/${name}`, createPostRequest(schema));
   }
 
   if (method.includes(methods.GET)) {
