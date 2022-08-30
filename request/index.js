@@ -11,14 +11,33 @@ const createPostRequest = function ({ mongooseSchema, joiSchema }) {
       // save the category
       return res.send(await mongooseObject.save());
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send(error);
     }
   };
 };
 
-const createGetRequest = function () {
-  return (req, res) => {
-    return res.send("GET");
+const createGetRequest = function ({ mongooseSchema }) {
+  return async (req, res) => {
+    const { id } = req.params;
+    try {
+      const mongooseObject = await mongooseSchema.findById(id);
+      if (!mongooseObject)
+        return res.status(404).send(`${mongooseSchema.modelName} not Found!`);
+      return res.send(mongooseObject);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  };
+};
+
+const createGetAllRequest = function ({ mongooseSchema }) {
+  return async (req, res) => {
+    try {
+      const categories = await mongooseSchema.find();
+      return res.send(categories);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
   };
 };
 
@@ -37,6 +56,7 @@ const createDeleteRequest = function () {
 module.exports = {
   createPostRequest,
   createGetRequest,
+  createGetAllRequest,
   createPutRequest,
   createDeleteRequest,
 };

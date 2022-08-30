@@ -5,6 +5,7 @@ const {
   createGetRequest,
   createPutRequest,
   createDeleteRequest,
+  createGetAllRequest,
 } = require("./request");
 
 const methods = { POST: 0, GET: 1, PUT: 2, DELETE: 3 };
@@ -24,7 +25,9 @@ app.endpoint = function endpoint(name, method, schema) {
   }
 
   if (method.includes(methods.GET)) {
-    app.get(`/${name}`, createGetRequest());
+    app.get(`/${name}/:id`, createGetRequest(schema));
+    // get all items route
+    app.get(`/${name}`, createGetAllRequest(schema));
   }
 
   if (method.includes(methods.PUT)) {
