@@ -31,7 +31,7 @@ app.endpoint = function endpoint(name, method, schema) {
   }
 
   if (method.includes(methods.PUT)) {
-    app.put(`/${name}`, createPutRequest());
+    app.put(`/${name}/:id`, createPutRequest(schema));
   }
 
   if (method.includes(methods.DELETE)) {

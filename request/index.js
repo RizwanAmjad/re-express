@@ -41,9 +41,25 @@ const createGetAllRequest = function ({ mongooseSchema }) {
   };
 };
 
-const createPutRequest = function () {
-  return (req, res) => {
-    return res.send("PUT");
+const createPutRequest = function ({ mongooseSchema, joiSchema }) {
+  return async (req, res) => {
+    const { id } = req.params;
+    // validate the request body
+    const error = validateJoi(joiSchema, req.body);
+    if (error) return res.status(400).send(error);
+    // check to see if any document exists with the current id
+    const doesExist = await mongooseSchema.findById(id);
+    if (!doesExist)
+      return res.status(404).send(`${mongooseSchema.modelName} not Found!`);
+    try {
+      const mongooseObject = await mongooseSchema.findByIdAndUpdate(
+        id,
+        req.body
+      );
+      return res.send(mongooseObject);
+    } catch (ex) {
+      return res.status(500).send(ex);
+    }
   };
 };
 
