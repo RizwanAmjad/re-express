@@ -35,7 +35,7 @@ app.endpoint = function endpoint(name, method, schema) {
   }
 
   if (method.includes(methods.DELETE)) {
-    app.delete(`/${name}`, createDeleteRequest());
+    app.delete(`/${name}/:id`, createDeleteRequest(schema));
   }
 };
 

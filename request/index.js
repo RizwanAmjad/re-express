@@ -63,9 +63,18 @@ const createPutRequest = function ({ mongooseSchema, joiSchema }) {
   };
 };
 
-const createDeleteRequest = function () {
-  return (req, res) => {
-    return res.send("DELETE");
+const createDeleteRequest = function ({ mongooseSchema }) {
+  return async (req, res) => {
+    const { id } = req.params;
+    // delete the mongoose object
+    try {
+      const mongooseObject = await mongooseSchema.findById(id);
+      if (!mongooseObject)
+        return res.status(404).send(`${mongooseSchema.modelName} not Found!`);
+      return res.send(await mongooseObject.remove());
+    } catch (ex) {
+      return res.status(500).send(ex);
+    }
   };
 };
 
