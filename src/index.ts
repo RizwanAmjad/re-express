@@ -9,17 +9,26 @@ import {
   createGetAllRequest,
 } from "./request"
 
-type Method = "POST" | "GET" | "PUT" | "DELETE"
+export type Method = "POST" | "GET" | "PUT" | "DELETE"
+export type EndpointFunction = (
+  name: string,
+  methods: Method[],
+  schema: any
+) => void
 
 interface ReExpress extends Express {
-  endpoint?: any
+  endpoint?: EndpointFunction
 }
 
 const app: ReExpress = express()
 
 app.use(express.json())
 
-app.endpoint = function endpoint(name: string, methods: Method[], schema: any) {
+app.endpoint = function endpoint(
+  name: string,
+  methods: Method[],
+  schema: any
+): void {
   if (methods.includes("POST")) {
     app.post(`/${name}`, createPostRequest(schema))
   }
