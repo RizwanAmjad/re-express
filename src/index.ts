@@ -9,7 +9,7 @@ import {
   createGetAllRequest,
 } from "./request"
 
-const methods = { POST: 0, GET: 1, PUT: 2, DELETE: 3 }
+type Method = "POST" | "GET" | "PUT" | "DELETE"
 
 interface ReExpress extends Express {
   endpoint?: any
@@ -18,28 +18,23 @@ interface ReExpress extends Express {
 const app: ReExpress = express()
 
 app.use(express.json())
-/**
- *
- * @param {String} name
- * @param {number[]} method
- * @param {Object} schema
- */
-app.endpoint = function endpoint(name: any, method: any, schema: any) {
-  if (method.includes(methods.POST)) {
+
+app.endpoint = function endpoint(name: string, methods: Method[], schema: any) {
+  if (methods.includes("POST")) {
     app.post(`/${name}`, createPostRequest(schema))
   }
 
-  if (method.includes(methods.GET)) {
+  if (methods.includes("GET")) {
     app.get(`/${name}/:id`, createGetRequest(schema))
     // get all items route
     app.get(`/${name}`, createGetAllRequest(schema))
   }
 
-  if (method.includes(methods.PUT)) {
+  if (methods.includes("PUT")) {
     app.put(`/${name}/:id`, createPutRequest(schema))
   }
 
-  if (method.includes(methods.DELETE)) {
+  if (methods.includes("DELETE")) {
     app.delete(`/${name}/:id`, createDeleteRequest(schema))
   }
 }
@@ -49,4 +44,3 @@ function reexpress(): ReExpress {
 }
 
 module.exports = reexpress
-module.exports.methods = methods
