@@ -1,16 +1,21 @@
-const express = require("express")
+import * as express from "express"
+import { Express } from "express"
 
-const {
+import {
   createPostRequest,
   createGetRequest,
   createPutRequest,
   createDeleteRequest,
   createGetAllRequest,
-} = require("./request")
+} from "./request"
 
 const methods = { POST: 0, GET: 1, PUT: 2, DELETE: 3 }
 
-const app = express()
+interface ReExpress extends Express {
+  endpoint?: any
+}
+
+const app: ReExpress = express()
 
 app.use(express.json())
 /**
@@ -39,7 +44,7 @@ app.endpoint = function endpoint(name: any, method: any, schema: any) {
   }
 }
 
-function reexpress() {
+function reexpress(): ReExpress {
   return app
 }
 

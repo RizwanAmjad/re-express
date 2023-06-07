@@ -1,4 +1,4 @@
-const validateJoi = require("../validation")
+import validateJoi from "../validation"
 
 export const createPostRequest = function ({ mongooseSchema, joiSchema }: any) {
   return async (req: any, res: any) => {
